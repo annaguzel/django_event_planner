@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <header class="masthead text-center text-white">
   <div class="masthead-content">
@@ -26,6 +26,11 @@
                       <div class="card" style="width: 18rem;">
                         <div class="card-body">
                           <h4 class="card-title">{{ event.title }}</h4>
+                          {% if event.image %}
+                          <img src="{{ event.image.url }}" class="card-img-top rounded-pill col-9" alt="Event picture">
+                          {% else %}
+                          <img src="{% static 'img/01.jpg' %}" class="card-img-top rounded-pill col-9 img-fluid" alt="Default event picture">
+                          {% endif %}
                           <p class="card-text">{{ event.description }}</p>
                           <p class="card-text">{{ event.location }}</p>
                           <p class="card-text">{{ event.date }}</p>

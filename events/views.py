@@ -47,7 +47,7 @@ def edit_event(request, event_id):
             return redirect('home')
         form= EventForm(instance = event_obj)
         if request.method == 'POST':
-            form = EventForm(request.POST, instance=event_obj)
+            form = EventForm(request.POST, request.FILES, instance=event_obj)
             if form.is_valid():
                 form.save()
             return redirect('home')

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <header class="masthead text-center text-white">
   <div class="masthead-content">
@@ -6,9 +7,17 @@
         <div class="jumbotron">
           <h2 class="masthead-subheading mb-0">Event Details</h2>
           <h4>{{ event.title }}</h4>
+          <h5>Organized by: {{ event.owner|title }}</h5>
+          {% if event.image %}
+        <img src="{{ event.image.url }}" class="img-fluid card-img-top rounded-pill col-8" alt="event picture">
+        {% else %}
+        <img src="{% static 'img/01.jpg' %}" class="card-img-top rounded-pill col-8" alt="default event picture">
+        {% endif %}
           <p>{{ event.description }}</p>
+
           <p>{{ event.location }}</p>
           <p>{{ event.date }} {{ event.time }}</p>
+          <p>{{ event.created_on }}</p>
           {% if request.user == event.owner %}
           <a class="btn btn-primary mx-1" href="{% url 'edit-event' event.id %}" role="button">Edit</a>
           {% endif %}
