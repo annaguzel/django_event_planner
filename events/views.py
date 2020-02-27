@@ -14,8 +14,11 @@ def home(request):
     return render(request, 'home.html',context)
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
-
+    my_events = request.user.my_events.all()
+    context = {
+    'my_events': my_events,
+    }
+    return render(request, 'dashboard.html', context)
 
 def create(request):
     form = EventForm()
