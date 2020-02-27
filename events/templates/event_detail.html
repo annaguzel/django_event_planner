@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h4 class="card-title">{{ event.title }}</h4>
-                  <p class="card-text">{{ event.description }}</p>
-                  <p class="card-text">{{ event.location }}</p>
-                  <p class="card-text">{{ event.date }} {{ event.time }}</p>
-                  {% if request.user == event.owner %}
-                  <a class="btn btn-primary mx-1" href="{% url 'edit-event' event.id %}" role="button">
-                      Edit
-                  </a>
-                  {% endif %}
-                </div>
+<header class="masthead text-center text-white">
+  <div class="masthead-content">
+    <div class="container">
+        <div class="jumbotron">
+          <h2 class="masthead-subheading mb-0">Event Details</h2>
+          <h4>{{ event.title }}</h4>
+          <p>{{ event.description }}</p>
+          <p>{{ event.location }}</p>
+          <p>{{ event.date }} {{ event.time }}</p>
+          {% if request.user == event.owner %}
+          <a class="btn btn-primary mx-1" href="{% url 'edit-event' event.id %}" role="button">Edit</a>
+          {% endif %}
 
-              </div>
-
+      </div>
+    </div>
+  </div>
+</header>
 
 {% endblock %}

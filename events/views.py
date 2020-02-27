@@ -7,14 +7,31 @@ from .models import Event
 from datetime import datetime
 
 def home(request):
-    return render(request, 'home.html')
+    events = Event.objects.filter(date__gte=datetime.now())
+    context = {
+        'events': events,
+    }
+    return render(request, 'home.html',context)
 
-def list(request):
-        events = Event.objects.filter(date__gte=datetime.now())
-        context = {
-            'events': events,
-        }
-        return render(request,'list.html',context)
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+
+def create(request):
+    form = EventForm()
+    if request.method == 'POST':
+        form = EventForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.owner = request.user
+            user.save()
+            return redirect('dashboard')
+    context = {
+        'form': form,
+    }
+    return render(request, 'create.html', context)
+
+
 
 def event_detail(request,event_id):
 
@@ -27,13 +44,13 @@ def event_detail(request,event_id):
 def edit_event(request, event_id):
         event_obj = Event.objects.get(id = event_id)
         if request.user != event_obj.owner:
-            return redirect('list')
+            return redirect('home')
         form= EventForm(instance = event_obj)
         if request.method == 'POST':
             form = EventForm(request.POST, instance=event_obj)
             if form.is_valid():
                 form.save()
-            return redirect('list')
+            return redirect('home')
 
         context = {
         'form': form,
