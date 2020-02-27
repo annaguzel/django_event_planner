@@ -1,10 +1,45 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import UserSignup, UserLogin
+from .forms import UserSignup, UserLogin, EventForm
+from django.contrib import messages
+from .models import Event
+from datetime import datetime
 
 def home(request):
     return render(request, 'home.html')
+
+def list(request):
+        events = Event.objects.filter(date__gte=datetime.now())
+        context = {
+            'events': events,
+        }
+        return render(request,'list.html',context)
+
+def event_detail(request,event_id):
+
+        event = Event.objects.get(id = event_id)
+        context={
+         "event":event
+        }
+        return render(request,'event_detail.html', context)
+
+def edit_event(request, event_id):
+        event_obj = Event.objects.get(id = event_id)
+        if request.user != event_obj.owner:
+            return redirect('list')
+        form= EventForm(instance = event_obj)
+        if request.method == 'POST':
+            form = EventForm(request.POST, instance=event_obj)
+            if form.is_valid():
+                form.save()
+            return redirect('list')
+
+        context = {
+        'form': form,
+        'event': event_obj,
+        }
+        return render(request,'edit_event.html', context)
 
 class Signup(View):
     form_class = UserSignup
@@ -58,4 +93,3 @@ class Logout(View):
         logout(request)
         messages.success(request, "You have successfully logged out.")
         return redirect("login")
-
