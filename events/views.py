@@ -8,14 +8,14 @@ from datetime import datetime
 from django.db.models import Q
 
 def home(request):
-	events = Event.objects.filter(date__gte=datetime.now())
-	query = request.GET.get('q')
-	if query:
-		events = events.filter(Q(title__icontains=query) | Q(description__icontains=query) | Q(owner__username__contains=query))
-	context = {
-		'events': events,
-	}
-	return render(request, 'home.html',context)
+    events = Event.objects.filter(date__gte=datetime.now())
+    query = request.GET.get('q')
+    if query:
+        events = events.filter(Q(title__icontains=query) | Q(description__icontains=query) | Q(owner__username__contains=query))
+    context = {
+    'events': events,
+    }
+    return render(request, 'home.html',context)
 
 
 def dashboard(request):
@@ -74,20 +74,19 @@ def event_book(request,event_id):
     form = BookingForm()
     if request.method == "POST":
         form = BookingForm(request.POST)
-        if form.is_valid():
-            booking = form.save(commit=False)
-            booking.event= event
-            booking.user = request.user
-            seats = event.get_seats_left()
-            if booking.ticket > seats:
-                messages.warning(request, "Not enough seats!")
-            else:
-                booking.save()
-                return redirect("event-detail", event_id)
+    if form.is_valid():
+        booking = form.save(commit=False)
+        booking.event= event
+        booking.owner = request.user
+        seats = event.get_seats_left()
+        if booking.ticket < seats:
+            booking.save()
+            return redirect("event-details", event_id)
+        else:
+            messages.warning(request, "Not enough seats!")
     context = {
-        "form":form,
-        "event":event,
-
+    "form":form,
+    "event":event,
     }
     return render(request, 'book_event.html', context)
 
