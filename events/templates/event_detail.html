@@ -30,6 +30,29 @@
           <a class="btn btn-primary mx-1" href="{% url 'edit-event' event.id %}" role="button">Edit</a>
           {% endif %}
 
+          {% if request.user == event.owner %}
+          <div class="row justify-content-md-center">
+            <div class="row mx-1 my-3">
+              <table class="table table-hover table-dark text-center">
+                <h3>Attendees:</h3>
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Seats Booked</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for booking in event.bookings.all %}
+                  <tr>
+                    <td scope="row">{{ booking.owner }}</td>
+                    <td scope="row">{{ booking.ticket }}</td>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
+</div>
+
       </div>
     </div>
   </div>

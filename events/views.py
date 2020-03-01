@@ -19,11 +19,14 @@ def home(request):
 
 
 def dashboard(request):
-    my_events = request.user.my_events.all()
-    context = {
-    'my_events': my_events,
-    }
-    return render(request, 'dashboard.html', context)
+	my_events = request.user.my_events.all()
+	my_bookings = request.user.my_booking.filter(event__date__lt = datetime.today())
+	context = {
+	'my_events': my_events,
+	'my_bookings': my_bookings,
+	}
+	return render(request, 'dashboard.html', context)
+
 
 def create(request):
     form = EventForm()
