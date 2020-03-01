@@ -1,17 +1,22 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import UserSignup, UserLogin, EventForm
+from .forms import UserSignup, UserLogin, EventForm, BookingForm
 from django.contrib import messages
-from .models import Event
+from .models import Event, Booking
 from datetime import datetime
+from django.db.models import Q
 
 def home(request):
-    events = Event.objects.filter(date__gte=datetime.now())
-    context = {
-        'events': events,
-    }
-    return render(request, 'home.html',context)
+	events = Event.objects.filter(date__gte=datetime.now())
+	query = request.GET.get('q')
+	if query:
+		events = events.filter(Q(title__icontains=query) | Q(description__icontains=query) | Q(owner__username__contains=query))
+	context = {
+		'events': events,
+	}
+	return render(request, 'home.html',context)
+
 
 def dashboard(request):
     my_events = request.user.my_events.all()
@@ -60,6 +65,33 @@ def edit_event(request, event_id):
         'event': event_obj,
         }
         return render(request,'edit_event.html', context)
+
+
+def event_book(request,event_id):
+    if request.user.is_anonymous:
+        return redirect('login')
+    event= Event.objects.get(id=event_id)
+    form = BookingForm()
+    if request.method == "POST":
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.event= event
+            booking.user = request.user
+            seats = event.get_seats_left()
+            if booking.ticket > seats:
+                messages.warning(request, "Not enough seats!")
+            else:
+                booking.save()
+                return redirect("event-detail", event_id)
+    context = {
+        "form":form,
+        "event":event,
+
+    }
+    return render(request, 'book_event.html', context)
+
+
 
 class Signup(View):
     form_class = UserSignup

@@ -12,6 +12,9 @@ urlpatterns = [
     path('dashboard/', views.dashboard , name='dashboard'),
 	path('event/<int:event_id>/edit/', views.edit_event , name='edit-event'),
     path('event/<int:event_id>/detail/',views.event_detail, name='event-details'),
+    path('event/<int:event_id>/book/',views.event_book, name='event-book'),
+
+
 
 
 

@@ -6,28 +6,32 @@
             <input class = "btn btn-warning rounded-pill" type="submit" value="Create Event">
         </a>
         </div>
+        <div class="container-fluid">
+          <div class="container">
+        <div class="row mx-1 my-3">
+                <table class="table table-hover table-dark">
+                  <h3>My Events</h3>
+                  <thead>
+                    <tr>
+                      <th scope="col">Event Title</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for event in my_events %}
 
+                    <tr>
+                      <td scope="row">{{ event.title }}</td>
+                      <td scope="row">{{ event.date }} {{ event.time }}</td>
+                      <td scope="row"> <a href="{% url 'event-details' event.id %}"><input class = "btn btn-primary rounded-pill" type="submit" value="view"></a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+                </div>
 </header>
-<div class="row mx-1 my-3">
-        <table class="table table-hover table-dark">
-          <h3>My Events</h3>
-          <thead>
-            <tr>
-              <th scope="col">Event Title</th>
-              <th scope="col">Date</th>
-              <th scope="col">Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for event in my_events %}
 
-            <tr>
-              <td scope="row">{{ event.title }}</td>
-              <td scope="row">{{ event.date }} {{ event.time }}</td>
-              <td scope="row"> <a href="{% url 'event-details' event.id %}"><input class = "btn btn-primary rounded-pill" type="submit" value="view"></a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-            </table>
-        </div>
 {% endblock %}

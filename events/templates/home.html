@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+
 <header class="masthead text-center text-white">
   <div class="masthead-content">
     <div class="container">
@@ -9,38 +10,40 @@
       {% if request.user.is_anonymous %}
         <a href="{% url 'signup' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up to find events!</a>
       {% else %}
-        <a href="#" class="btn btn-primary btn-xl rounded-pill mt-5">Find events!</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Find events!</a>
       {% endif %}
+      <form class="form-inline d-flex justify-content-center md-form form-sm mt-0" action="{% url 'home' %}">
+        <i class="fas fa-search" aria-hidden="false"></i>
+        <input class="form-control form-control-sm ml-3 w-75" type="search" placeholder="Search event" aria-label="Search" name="q">
+      </form>
+      <div class="container-fluid">
+        <div class="container">
+              <div class="row justify-content-center my-3 text-dark">
+                  {%for event in events %}
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-body">
+                                <h4 class="card-title">{{ event.title }}</h4>
+                                  {% if event.image %}
+                                    <img src="{{ event.image.url }}" class="card-img-top rounded-pill col-9" alt="Event picture">
+                                  {% else %}
+                                    <img src="{% static 'img/01.jpg' %}" class="card-img-top rounded-pill col-9 img-fluid" alt="Default event picture">
+                                  {% endif %}
+                                    <p class="card-text">{{ event.description }}</p>
+                                    <p class="card-text">{{ event.location }}</p>
+                                    <p class="card-text">{{ event.date }}</p>
+                                    <p class="card-text">{{ event.owner }}</p>
+
+                                    <a href="{% url 'event-details' event.id %}" class="btn btn-outline-dark">More</a>
+                              </div>
+                          </div>
+                      {%endfor%}
+              </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="bg-circle-1 bg-circle"></div>
-  <div class="bg-circle-2 bg-circle"></div>
-  <div class="bg-circle-3 bg-circle"></div>
-  <div class="bg-circle-4 bg-circle"></div>
-</header>
 
-<div class="container-fluid">
-  <div class="container">
-        <div class="row justify-content-center my-3 ">
-    {%for event in events %}
-                      <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                          <h4 class="card-title">{{ event.title }}</h4>
-                          {% if event.image %}
-                          <img src="{{ event.image.url }}" class="card-img-top rounded-pill col-9" alt="Event picture">
-                          {% else %}
-                          <img src="{% static 'img/01.jpg' %}" class="card-img-top rounded-pill col-9 img-fluid" alt="Default event picture">
-                          {% endif %}
-                          <p class="card-text">{{ event.description }}</p>
-                          <p class="card-text">{{ event.location }}</p>
-                          <p class="card-text">{{ event.date }}</p>
-                          <a href="{% url 'event-details' event.id %}" class="btn btn-outline-dark">More</a>
-                        </div>
-                      </div>
-        {%endfor%}
-        </div>
-        </div>
-        </div>
+</header>
 
 
 
