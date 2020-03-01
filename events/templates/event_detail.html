@@ -5,19 +5,19 @@
   <div class="masthead-content">
     <div class="container">
         <div class="jumbotron">
-          <h2 class="masthead-subheading mb-0">Event Details</h2>
-          <h4>{{ event.title }}</h4>
+          <h3 class="masthead-subheading mb-0">{{ event.title }}</h3>
           <h5>Organized by: {{ event.owner|title }}</h5>
           {% if event.image %}
-        <img src="{{ event.image.url }}" class="img-fluid card-img-top rounded-pill col-8" alt="event picture">
+        <img src="{{ event.image.url }}" class="img-fluid card-img-top col-5 " alt="event picture">
         {% else %}
-        <img src="{% static 'img/01.jpg' %}" class="card-img-top rounded-pill col-8" alt="default event picture">
+        <img src="{% static 'img/01.jpg' %}" class="card-img-top col-5" alt="default event picture">
         {% endif %}
-          <p>{{ event.description }}</p>
+          <p>Description:  {{ event.description }}</p>
 
-          <p>{{ event.location }}</p>
-          <p>{{ event.date }} {{ event.time }}</p>
-          <p> Available seats :{{event.get_seats_left}}</p>
+          <p>Lovation:  {{ event.location }}</p>
+          <p>Date:  {{ event.date }}</p>
+          <p>Time:  {{ event.time }}</p>
+          <p> Available seats:  {{event.get_seats_left}}</p>
           {% if request.user.is_authenticated%}
             {% if event.get_seats_left > 0 %}
               <a class="btn btn-primary mx-1" href="{% url 'event-book' event.id %}" role="button">Book</a>
