@@ -19,7 +19,7 @@
           <p>{{ event.date }} {{ event.time }}</p>
           <p> Available seats :{{event.get_seats_left}}</p>
           {% if request.user.is_authenticated%}
-            {% if event.seats > 0 %}
+            {% if event.get_seats_left > 0 %}
               <a class="btn btn-primary mx-1" href="{% url 'event-book' event.id %}" role="button">Book</a>
             {% else %}
             <a class="btn btn-primary mx-1" href="#" role="button">Full</a>

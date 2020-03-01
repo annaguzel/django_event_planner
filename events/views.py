@@ -79,7 +79,7 @@ def event_book(request,event_id):
         booking.event= event
         booking.owner = request.user
         seats = event.get_seats_left()
-        if booking.ticket < seats:
+        if booking.ticket <= seats:
             booking.save()
             return redirect("event-details", event_id)
         else:
