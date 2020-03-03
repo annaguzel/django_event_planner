@@ -34,8 +34,6 @@ class Profile(models.Model):
 	bio = models.TextField(null=True, blank=True)
 	image = models.ImageField(null=True, blank=True)
 
-	def __str__(self):
-		return str(self.user)
 
 
 def create_profile(sender, instance, created, **kwargs):

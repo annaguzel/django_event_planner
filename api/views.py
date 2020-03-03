@@ -18,8 +18,25 @@ UserSerializer,
 DetailSerializer,
 OwnerDetailSerializer,
 BookingDetailsSerializer,
+AttendSerializer,
 )
 from rest_framework import serializers
+
+##############################
+
+class EventList(ListAPIView):
+	queryset = Event.objects.all()
+	serializer_class = ListSerializer
+	filter_backends = [SearchFilter,]
+	search_fields = ['title', 'owner__username']
+
+##############################
+
+class UpEventList(ListAPIView):
+	queryset = Event.objects.filter(date__gt=datetime.now())
+	serializer_class = ListSerializer
+	filter_backends = [SearchFilter,]
+	search_fields = ['title', 'owner__username']
 
 ##############################
 
@@ -42,7 +59,7 @@ class BookedEventsList(ListAPIView):
 	permission_classes = [IsAuthenticated]
 
 	def get_queryset(self):
-		query = Booking.objects.filter(name=self.request.user)
+		query = Booking.objects.filter(owner=self.request.user)
 		return query
 
 ###############################
@@ -64,7 +81,16 @@ class UpdateEvent(RetrieveUpdateAPIView):
 	lookup_field = 'id'
 	lookup_url_kwarg = 'event_id'
 
-###############################
+##########################################
+
+class BookingDetails(RetrieveAPIView):
+	serializer_class = BookingListSerializer
+	queryset = Booking.objects.all()
+	lookup_field = 'id'
+	lookup_url_kwarg = 'event_id'
+
+	def get_object(self):
+		return self.request.user
 
 
 ##########################################
@@ -86,7 +112,7 @@ class EventDetails(RetrieveAPIView):
 
 class BookEvent(CreateAPIView):
 	serializer_class = BookingListSerializer
-	# permission_classes = [IsAuthenticated,]
+	permission_classes = [IsAuthenticated,]
 
 	def perform_create(self,serializer):
 		serializer.save(owner=self.request.user, event_id=self.kwargs['event_id'])
@@ -106,3 +132,10 @@ class Profile(RetrieveAPIView):
 		return self.request.user
 
 ################################
+
+class AttendantsView(ListAPIView):
+    serializer_class = AttendSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        event = Event.objects.get(id=self.kwargs['event_id'])
+        return event.bookings.all()

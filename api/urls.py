@@ -13,7 +13,9 @@ urlpatterns = [
     path('profile/', views.Profile.as_view(), name='profile'),
 
 
-	path('ownerlist/<str:owner_username>', views.OwnerEventList.as_view(), name='owner-list'),
+	path('eventlist/<str:owner_username>', views.OwnerEventList.as_view(), name='owner-list'),
+	path('eventlist/', views.EventList.as_view(), name='owner-list'),
+	path('upcomingeventlist/', views.UpEventList.as_view(), name='owner-list'),
 
     path('bookedlist/', views.BookedEventsList.as_view(), name='user-booking-list'),
 	path('create/', views.CreateEvent.as_view(), name='create-event-api'),
@@ -22,5 +24,8 @@ urlpatterns = [
 
     path('<int:event_id>/book/', views.BookEvent.as_view(), name='book-event-api'),
 
-    path('event/<int:event_id>/detail/',views.EventDetails.as_view(), name="event-detail-api")
-	]
+    path('event/<int:event_id>/detail/',views.EventDetails.as_view(), name="event-detail-api"),
+    path('event/<int:event_id>/attendants/', views.AttendantsView.as_view(), name="event-attendants"),
+
+
+    ]

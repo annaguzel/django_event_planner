@@ -20,10 +20,9 @@ class ListSerializer(serializers.ModelSerializer):
 
 class BookingListSerializer(serializers.ModelSerializer):
 	event = serializers.SerializerMethodField()
-
 	class Meta:
 		model= Booking
-		exclude=['owner',]
+		fields = ['event', 'ticket',]
 
 	def get_event(self, obj):
 		return (obj.event.title)
@@ -41,18 +40,6 @@ class UpdateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model= Event
 		fields = [ 'title', 'description', 'location', 'date', 'time', 'seats', 'image']
-
-
-###################################
-
-
-###################################
-
-class BookingListSerializer(serializers.ModelSerializer):
-	class Meta:
-		model= Booking
-		fields =['ticket']
-
 
 ####################################
 
@@ -99,6 +86,8 @@ class DetailSerializer(serializers.ModelSerializer):
 	def get_owner(self, obj):
 		return "%s"%(obj.owner.username)
 
+##################################################
+
 class OwnerDetailSerializer(serializers.ModelSerializer):
 
 	owner = serializers.SerializerMethodField()
@@ -113,15 +102,37 @@ class OwnerDetailSerializer(serializers.ModelSerializer):
 		model = Event
 		fields = ["title", "owner", "description", "location", "date", "time",
 		"seats", "booking", "attendees",]
+
 	def get_owner(self, obj):
 		return "%s"%(obj.owner.username)
+
 	def get_attendees(self, obj):
 		bookings = obj.bookings.all()
 		print ("Bookings: ", bookings)
 		return BookingDetailsSerializer(bookings, many=True).data
 
+#################################################
+
 class BookingDetailsSerializer(serializers.ModelSerializer):
-	owner = serializers.StringRelatedField()
+	owner = serializers.SerializerMethodField()
 	class Meta:
 		model = Booking
-		fields = ['owner', 'ticket',]
+		fields = ["owner", "ticket",]
+
+	def get_owner(self, obj):
+		return "%s"%(obj.owner)
+
+###################################################
+
+class AttendSerializer(serializers.ModelSerializer):
+    Attendees = serializers.SerializerMethodField()
+    event_name = serializers.SerializerMethodField()
+    class Meta:
+        model = Booking
+        fields = ['Attendees', 'event_name']
+
+    def get_Attendees(self,obj):
+        return obj.owner.username
+
+    def get_event_name(self,obj):
+        return obj.event.title
