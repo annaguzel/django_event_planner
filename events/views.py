@@ -19,21 +19,24 @@ def home(request):
     }
     return render(request, 'home.html',context)
 
-
 def edit_profile(request, user_id):
     profile = Profile.objects.get(user_id = user_id)
     if request.user != profile.user:
         return redirect('home')
     form= ProfileForm(instance = profile)
+    user_form = UserSignup(instance=request.user)
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
+        user_form = UserSignup(request.POST, instance=request.user)
+        if form.is_valid() and user_form.is_valid():
             form.save()
+            user_form.save()
             return redirect('profile', user_id)
 
     context = {
         'form': form,
         'profile': profile,
+        'user_form':user_form
     }
     return render(request, 'edit_profile.html', context)
 
