@@ -24,7 +24,11 @@ SECRET_KEY = '$^0io#_@u*v1fjcbods_x*5y^tqx=9b9ypx_zjecko_+19a3-1'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'anna.osama1234@gmail.com'
+EMAIL_HOST_PASSWORD = 'anna1234osama'
+EMAIL_PORT = 587
 
 # Application definition
 

@@ -7,6 +7,7 @@ from .models import Event, Booking, Profile
 from datetime import datetime
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 
 def home(request):
@@ -120,6 +121,16 @@ def event_book(request,event_id):
         seats = event.get_seats_left()
         if booking.ticket <= seats:
             booking.save()
+            send_mail(
+            'Booking Details:',
+            ('''Event:{},
+            'Date:{},
+            'Time:{},
+            'Number of tickets:{}'''.format(booking.event.title, booking.event.date,booking.event.time,booking.ticket)),
+            'anna.osama1234@gmail.com',
+            [booking.owner.email],
+            fail_silently=False,
+            )
             return redirect("event-details", event_id)
         else:
             messages.warning(request, "Not enough seats!")
