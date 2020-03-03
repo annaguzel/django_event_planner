@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<header class="masthead text-center">
+     <div class="mx-5">
+      <div class="card text-center w-50">
+      <div class="card-header">
+      Profile
+      </div>
+      <div class="card-body">
+      <h3 class="card-title">{{user.profile.user.username}}</h3>
+      {% if user.profile.image %}
+      <img src="{{ user.profile.image.url }}" class="img-fluid card-img-top col-9 " alt="profile picture">
+      {% else %}
+      <img src="{% static 'img/01.jpg' %}" class="card-img-top col-5" alt="default profile picture">
+      {% endif %}
+      <p class="card-text">Bio : {{user.profile.bio}}</p>
+      {% if request.user == user %}
+      <a href="{% url 'edit-profile' request.user.id %}">
+      <input class="btn btn-warning rounded-pill mt-5 mb-3" type="submit" value="Edit profile">
+      </a>
+      {% endif %}
+      <table class="table">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Events</th>
+        </tr>
+        <tr>
+          <td scope="row">{{user.username}}</td>
+          <td>{{user.my_events.all.count}}</td>
+        </tr>
+      </table>
+
+      </div>
+      </div>
+      </div>
+
+
+</header>
+{% endblock content %}

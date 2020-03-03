@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Event, Booking
+from .models import Event, Booking, Profile
 
 class UserSignup(forms.ModelForm):
     class Meta:
@@ -10,6 +10,11 @@ class UserSignup(forms.ModelForm):
         widgets={
         'password': forms.PasswordInput(),
         }
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio', 'image']
 
 
 class UserLogin(forms.Form):

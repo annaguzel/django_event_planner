@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import UserSignup, UserLogin, EventForm, BookingForm
+from .forms import UserSignup, UserLogin, EventForm, BookingForm, ProfileForm
 from django.contrib import messages
-from .models import Event, Booking
+from .models import Event, Booking, Profile
 from datetime import datetime
 from django.db.models import Q
+from django.contrib.auth.models import User
+
 
 def home(request):
     events = Event.objects.filter(date__gte=datetime.now())
@@ -16,6 +18,35 @@ def home(request):
     'events': events,
     }
     return render(request, 'home.html',context)
+
+
+def edit_profile(request, user_id):
+    profile = Profile.objects.get(user_id = user_id)
+    if request.user != profile.user:
+        return redirect('home')
+    form= ProfileForm(instance = profile)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', user_id)
+
+    context = {
+        'form': form,
+        'profile': profile,
+    }
+    return render(request, 'edit_profile.html', context)
+
+
+
+def profile(request, user_id):
+    user = User.objects.get(id=user_id)
+    events = user.my_events.all()
+    context={
+        'user': user,
+        'events': events,
+    }
+    return render(request, 'profile.html', context)
 
 
 def dashboard(request):
