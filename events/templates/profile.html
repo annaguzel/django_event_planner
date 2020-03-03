@@ -30,16 +30,16 @@
       Profile
       </div>
       <div class="card-body">
-      <h3 class="card-title">{{user.profile.user.username}}</h3>
+      <h3 class="card-title">{{user.username}}</h3>
       {% if user.profile.image %}
       <img src="{{ user.profile.image.url }}" class="img-fluid card-img-top col-9 " alt="profile picture">
       {% else %}
       <img src="{% static 'img/01.jpg' %}" class="card-img-top col-5" alt="default profile picture">
       {% endif %}
-      <p class="card-text">Name : {{user.profile.user.first_name}}</p>
-      <p class="card-text">Last Name : {{user.profile.user.last_name}}</p>
+      <p class="card-text">Name : {{user.first_name}}</p>
+      <p class="card-text">Last Name : {{user.last_name}}</p>
       <p class="card-text">Bio : {{user.profile.bio}}</p>
-      <p class="card-text">Email : {{user.profile.user.email}}</p>
+      <p class="card-text">Email : {{user.email}}</p>
 
       {% if request.user == user %}
       <a href="{% url 'edit-profile' request.user.id %}">

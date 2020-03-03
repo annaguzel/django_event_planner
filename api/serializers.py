@@ -125,13 +125,13 @@ class BookingDetailsSerializer(serializers.ModelSerializer):
 ###################################################
 
 class AttendSerializer(serializers.ModelSerializer):
-    Attendees = serializers.SerializerMethodField()
+    attendee = serializers.SerializerMethodField()
     event_name = serializers.SerializerMethodField()
     class Meta:
         model = Booking
-        fields = ['Attendees', 'event_name']
+        fields = ['attendee', 'event_name']
 
-    def get_Attendees(self,obj):
+    def get_attendee(self,obj):
         return obj.owner.username
 
     def get_event_name(self,obj):
