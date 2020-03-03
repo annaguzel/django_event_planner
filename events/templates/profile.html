@@ -2,8 +2,30 @@
 {% load static %}
 {% block content %}
 <header class="masthead text-center">
-     <div class="mx-5">
-      <div class="card text-center w-50">
+     <div class="d-flex justify-content-between mx-5">
+       <div >
+       <table class="table table-hover table-dark">
+         <h3>My Events</h3>
+         <thead>
+           <tr>
+             <th scope="col">Event Title</th>
+             <th scope="col">Date</th>
+             <th scope="col">Details</th>
+           </tr>
+         </thead>
+         <tbody>
+           {% for event in my_events %}
+
+           <tr>
+             <td scope="row">{{ event.title }}</td>
+             <td scope="row">{{ event.date }} {{ event.time }}</td>
+             <td scope="row"> <a href="{% url 'event-details' event.id %}"><input class = "btn btn-primary rounded-pill" type="submit" value="view"></a></td>
+           </tr>
+           {% endfor %}
+           </tbody>
+           </table>
+       </div>
+      <div class="card text-center">
       <div class="card-header">
       Profile
       </div>
@@ -14,26 +36,24 @@
       {% else %}
       <img src="{% static 'img/01.jpg' %}" class="card-img-top col-5" alt="default profile picture">
       {% endif %}
+      <p class="card-text">Name : {{user.profile.user.first_name}}</p>
+      <p class="card-text">Last Name : {{user.profile.user.last_name}}</p>
       <p class="card-text">Bio : {{user.profile.bio}}</p>
+      <p class="card-text">Email : {{user.profile.user.email}}</p>
+
       {% if request.user == user %}
       <a href="{% url 'edit-profile' request.user.id %}">
       <input class="btn btn-warning rounded-pill mt-5 mb-3" type="submit" value="Edit profile">
       </a>
       {% endif %}
-      <table class="table">
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Events</th>
-        </tr>
-        <tr>
-          <td scope="row">{{user.username}}</td>
-          <td>{{user.my_events.all.count}}</td>
-        </tr>
-      </table>
 
       </div>
       </div>
+
       </div>
+
+
+
 
 
 </header>

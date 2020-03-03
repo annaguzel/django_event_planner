@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import UserSignup, UserLogin, EventForm, BookingForm, ProfileForm
+from .forms import UserSignup, UserLogin, EventForm, BookingForm, ProfileForm,UserForm
 from django.contrib import messages
 from .models import Event, Booking, Profile
 from datetime import datetime
@@ -24,10 +24,10 @@ def edit_profile(request, user_id):
     if request.user != profile.user:
         return redirect('home')
     form= ProfileForm(instance = profile)
-    user_form = UserSignup(instance=request.user)
+    user_form = UserForm(instance=request.user)
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
-        user_form = UserSignup(request.POST, instance=request.user)
+        user_form = UserForm(request.POST, instance=request.user)
         if form.is_valid() and user_form.is_valid():
             form.save()
             user_form.save()
@@ -45,9 +45,11 @@ def edit_profile(request, user_id):
 def profile(request, user_id):
     user = User.objects.get(id=user_id)
     events = user.my_events.all()
+    my_events = request.user.my_events.filter(date__gte=datetime.now())
     context={
         'user': user,
         'events': events,
+        'my_events':my_events,
     }
     return render(request, 'profile.html', context)
 
