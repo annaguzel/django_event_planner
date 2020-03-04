@@ -74,11 +74,9 @@ def edit_profile(request, user_id):
 
 def profile(request, user_id):
     user = User.objects.get(id=user_id)
-    events = user.my_events.all()
     my_events = user.my_events.filter(date__gte=datetime.now())
     context={
         'user': user,
-        'events': events,
         'my_events':my_events,
     }
     return render(request, 'profile.html', context)
