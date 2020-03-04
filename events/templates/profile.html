@@ -45,6 +45,10 @@
       <a href="{% url 'edit-profile' request.user.id %}">
       <input class="btn btn-warning rounded-pill mt-5 mb-3" type="submit" value="Edit profile">
       </a>
+      {% else %}
+
+      <a href="{% url 'follow-view' user.id %}">Follow</a>
+      
       {% endif %}
 
       </div>

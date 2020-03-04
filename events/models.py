@@ -34,10 +34,12 @@ class Profile(models.Model):
 	bio = models.TextField(null=True, blank=True)
 	image = models.ImageField(null=True, blank=True)
 
-
-
 def create_profile(sender, instance, created, **kwargs):
 	if created:
 		user_profile = Profile.objects.create(user = instance)
 
 post_save.connect(create_profile, sender = User)
+
+class UserFollowing(models.Model):
+	follower_user_id = models.ForeignKey(User, related_name="following",on_delete=models.CASCADE)
+	following_user_id = models.ForeignKey(User, related_name="followers",on_delete=models.CASCADE)

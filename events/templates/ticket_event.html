@@ -1,0 +1,51 @@
+<<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <header class="masthead  text-white ">
+      <div class="masthead-content">
+
+          <div class="card bg-light mb-3 text-dark" >
+            <div class="card-header text-center" >Ticket</div>
+            <div class="card-body">
+              <h5 class="card-title">{{booking.title}}</h5>
+              <p class="card-text">
+                ----------------------------------------------------------<br>
+                Event Ticket Info : <br>
+                Name : {{booking.owner}} <br>
+                Event : {{ event.title }}<br>
+                Date : {{event.date}}<br>
+                Time : {{event.time}}<br>
+                Location : {{event.location}}<br>
+                Number of tickets : {{booker.ticket}}<br>
+                ----------------------------------------------------------<br>
+              </p>
+              <p class="card-text">
+                Dear {{booking.owner}} ,<br>
+
+                  Welcome to {{event.title}}. We can't wait to see you in {{event.location}} In {{event.date}}.<br>
+
+                  I'm apart of our attendee support team, and I'll be sending you some useful information about {{event.title}} in the one hour. In the meantime you can find more using the following links.<br>
+
+                      1. You can stay with the {{event.name}} network by booking one of our hotels.<br>
+                      2. Learn more about the Location<br>
+                      3. Tell your friends you're attending.<br>
+                      4. Follow us on Facebook and Twitter.<br>
+                      5. Your ticket reference is A1PP-1.<br>
+
+                  If you have any questions, you can send us an email and we will answer your question.<br>
+
+                  Best<br>
+                  The organizer team Of {{event.title}} :<span style="text-transform:uppercase;"> {{event.owner}}</span><br>
+              </p>
+            </div>
+          </div>
+        </div>
+
+  </header>
+  <body>
+
+  </body>
+</html>

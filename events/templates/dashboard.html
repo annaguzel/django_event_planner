@@ -15,6 +15,7 @@
                     <tr>
                       <th scope="col">Event Title</th>
                       <th scope="col">Date</th>
+                      <th scope="col">Time</th>
                       <th scope="col">Details</th>
                     </tr>
                   </thead>
@@ -23,7 +24,8 @@
 
                     <tr>
                       <td scope="row">{{ event.title }}</td>
-                      <td scope="row">{{ event.date }} {{ event.time }}</td>
+                      <td scope="row">{{ event.date }}</td>
+                      <td scope="row">{{ event.time }}</td>
                       <td scope="row"> <a href="{% url 'event-details' event.id %}"><input class = "btn btn-primary rounded-pill" type="submit" value="view"></a></td>
                     </tr>
                     {% endfor %}
@@ -39,13 +41,16 @@
                <tr>
                  <th scope="col">Booking Title</th>
                  <th scope="col">Date</th>
+                 <th scope="col">Time</th>
+
                </tr>
              </thead>
                  <tbody>
                    {% for booking in my_bookings %}
                    <tr>
                      <td scope="row">{{ booking.event.title }}</td>
-                     <td scope="row">{{ booking.event.date }} {{ booking.event.time }}</td>
+                     <td scope="row">{{ booking.event.date }}</td>
+                     <td scope="row">{{ booking.event.time }}</td>
                    </tr>
                    {% endfor %}
                  </tbody>
