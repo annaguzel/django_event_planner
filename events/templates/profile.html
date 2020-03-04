@@ -48,7 +48,8 @@
       {% else %}
 
       <a href="{% url 'follow-view' user.id %}">Follow</a>
-      
+      <a href="{% url 'unfollow-view' user.id %}">Unfollow</a>
+
       {% endif %}
 
       </div>

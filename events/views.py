@@ -16,29 +16,34 @@ def follow(request, user_id):
     user = User.objects.get(id=user_id)
     if request.user.is_anonymous:
         return redirect('login')
-    if UserFollowing.objects.filter(follower_user_id=request.user,following_user_id=user).count()>0:
-        messages.warning(request, "You have already followed this user")
-        return redirect('profile',user_id)
-    follow= UserFollowing.objects.create(follower_user_id=request.user,following_user_id=user)
-    follow.refresh_from_db()
-    messages.success(request, ('You are following selected user'))
-    return redirect ('profile',user_id)
+    if UserFollowing.objects.filter(follower_user_id = request.user , following_user_id = user).exists():
+    # if UserFollowing.objects.filter(follower_user_id=request.user,following_user_id=user).count()>0:
+    #     messages.warning(request, "You have already followed this user")
+    #     return redirect('profile',user_id)
+        messages.warning(request, ('You are already following this user'))
+        return redirect ('profile',user_id)
 
-# def unfollow(request, user_id):
-#     user = User.objects.get(id=user_id)
-#     follow = UserFollowing.objects.get(follower_user_id = request.user , following_user_id = user)
-#     if not follow:
-#         follow.delete()
-#         follow.refresh_from_db()
-#         messages.success(request, ('You have unfollowed selected user'))
-#         return redirect ('profile',user_id)
-#         messages.warning(request, ('You are not following this user'))
-#         return redirect ('profile',user_id)
-#     else:
-#         messages.warning(request, ('You are not following this user'))
-#         return redirect ('profile',user_id)
+    else:
+        follow= UserFollowing.objects.create(follower_user_id=request.user,following_user_id=user)
+        follow.refresh_from_db()
+        messages.success(request, ('You are following selected user'))
+        return redirect ('profile',user_id)
+
+
+def unfollow(request, user_id):
+	user = User.objects.get(id=user_id)
 #
-
+	follow = UserFollowing.objects.get(follower_user_id = request.user, following_user_id = user)
+	if follow:
+		follow.delete()
+		messages.success(request, ('You have unfollowed selected user'))
+		return redirect ('profile',user_id)
+		messages.warning(request, ('You are not following this user'))
+		return redirect ('profile',user_id)
+	else:
+		messages.warning(request, ('You are not following this user'))
+		return redirect ('profile',user_id)
+######################################################
 def home(request):
     events = Event.objects.filter(date__gte=datetime.now())
     query = request.GET.get('q')
